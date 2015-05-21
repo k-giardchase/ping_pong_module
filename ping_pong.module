@@ -24,6 +24,8 @@ function ping_pong_form() {
         '#title' => 'Count Goal',
         '#type' => 'textfield',
         '#description' => t('Please enter the number you want to count up to.'),
+        '#element_validate' => array('element_validate_integer_positive', 'element_validate_range'),
+        '#required' => TRUE,
     );
 
     $form['submit'] = array(
@@ -32,6 +34,12 @@ function ping_pong_form() {
     );
 
     return $form;
+}
+
+function element_validate_range($element) {
+    if($element['#value'] > 100 || $element['#value'] < 1) {
+        form_error($element, t('Number must be less than 100 or greater than 1.'));
+    }
 }
 
 function ping_pong_form_submit($form, &$form_state) {
